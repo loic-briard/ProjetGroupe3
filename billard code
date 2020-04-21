@@ -1,0 +1,112 @@
+///////////////
+/* monScript */
+///////////////
+
+//taille a modifier
+
+/* les variables globales */
+var leDessin;
+
+// dimensions de la zone graphique
+var longueur = 700;
+var largeur = 450;
+//deplacement de la boule blanche
+let position;
+let velocity;
+let r = 12;
+let speed;
+var X;
+var Y;
+
+// pour la maison
+function dessinerBillard()
+{
+	// affiche un rectangle marron exterieur
+	fill(132, 60, 0 );
+	rect(0,0,700,450);
+	// affiche un rectangle marron interieur
+	fill( 30, 165, 0 );
+	rect(10,10,680,430);
+}
+
+function dessinerTrous()
+{
+	// affiche un cercle noir
+	fill('black');
+	circle(15,15,20);
+	circle(350,15,20);
+	circle(685,15,20);
+	circle(15,435,20);
+	circle(350,435,20);
+	circle(685,435,20);
+}
+
+// la méthode qui s'exécute au démarrage
+
+function setup()
+{
+	leDessin=createCanvas(longueur,largeur);
+	leDessin.parent("dessin");
+	background('green');
+	
+	// crée les éléments qui ne bougent pas
+	dessinerBillard();
+	dessinerTrous();
+	
+	//commencer au milieu du billard
+	position = createVector(width / 2, height/2);
+	speed = createVector(0, 0)
+	//vecteur initial
+	velocity = createVector(0, 0);
+	velocity.add(speed);
+}
+
+// la méthode qui s'exécute en boucle
+function draw() {
+  background('green');
+	// crée les éléments qui ne bougent pas
+	dessinerBillard();
+	dessinerTrous();
+    //dessiner boule blanche
+	fill('white');
+	ellipse(position.x, position.y, r * 2, r * 2);
+  
+	// detecter collision
+	// droite
+	if (position.x > width - 22) {
+		position.x = width - 22;
+		velocity.x *= -1;
+	}
+	// gauche
+	if (position.x < 22) {
+		position.x = 22;
+		velocity.x *= -1;
+	}
+	// haut
+	if (position.y < 22) {
+		position.y = 22;
+		velocity.y *= -1;
+	}
+	//bas
+	if (position.y > height - 22) {
+		position.y = height - 22;
+		velocity.y *= -1;
+	}
+	//pour la deceleration
+	velocity.x*=0.98
+	velocity.y*=0.98
+	if (abs(velocity.x)<0.1 && abs(velocity.y)<0.1){
+    velocity.x=0;
+    velocity.y=0;
+	}    
+	//mouvement de l'ellipse
+	position.add(velocity);
+}
+
+function mouseReleased() {
+  X= (position.x-mouseX)/15;
+  Y= (position.y-mouseY)/15;
+  
+  speed = createVector(X, Y)
+  velocity.add(speed);
+}
