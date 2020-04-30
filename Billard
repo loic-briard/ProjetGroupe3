@@ -1,1 +1,208 @@
+///////////////
+/* monScript */
+///////////////
 
+//taille a modifier
+
+/* les variables globales */
+
+var leDessin;
+
+// dimensions de la zone graphique
+var longueur = 700;
+var largeur = 450;
+var dboulle = 24;
+
+var xnoire = (longueur/2)/2;
+var ynoire = largeur/2;
+
+var xrouge1 = xnoire + (dboulle-2)*2;
+var xrouge2 = xnoire + (dboulle-2);
+var xrouge3 = xnoire;
+var xrouge4 = xnoire - (dboulle-2);
+var xrouge5 = xnoire - (dboulle-2);
+var xrouge6 = xnoire - (dboulle-2)*2;
+var xrouge7 = xnoire - (dboulle-2)*2;
+
+var yrouge1 = ynoire;
+var yrouge2 = ynoire + dboulle/2;
+var yrouge3 = ynoire - dboulle;
+var yrouge4 = ynoire - dboulle/2;
+var yrouge5 = ynoire + (dboulle/2)*3;
+var yrouge6 = ynoire - dboulle*2;
+var yrouge7 = ynoire + dboulle;
+
+var xjaune1 = xnoire + dboulle-2;
+var xjaune2 = xnoire;
+var xjaune3 = xnoire - (dboulle-2);
+var xjaune4 = xnoire - (dboulle-2);
+var xjaune5 = xnoire - (dboulle-2)*2;
+var xjaune6 = xnoire - (dboulle-2)*2;
+var xjaune7 = xnoire - (dboulle-2)*2;
+
+var yjaune1 = ynoire - dboulle/2;
+var yjaune2 = ynoire + dboulle;
+var yjaune3 = ynoire - (dboulle/2)*3;
+var yjaune4 = ynoire + dboulle/2;
+var yjaune5 = ynoire - dboulle;
+var yjaune6 = ynoire; 
+var yjaune7 = ynoire + dboulle*2;
+
+// pour le Billard
+function dessinerBillard()
+{
+	// affiche un rectangle marron
+	fill(132, 60, 0 );
+	rect(0,0,longueur,largeur);
+	// affiche un rectangle vert
+	fill( 30, 165, 0 );
+	rect(10,10,longueur-20,largeur-20);
+}
+function dessinerTrous()
+{
+	// affiche un cercle noir
+	fill('black');
+	circle(15,15,20);
+	circle(longueur/2,15,20);
+	circle(longueur-15,15,20);
+	circle(15,largeur-15,20);
+	circle(longueur/2,largeur-15,20);
+	circle(longueur-15,largeur-15,20);
+}
+
+// pour les Boules
+function dessinerBoules()
+{
+	// affiche la boule noire
+	fill('black');
+	circle(xnoire,ynoire,dboulle);
+	// affiche les boules rouges
+	fill('red');
+	circle(xrouge1,yrouge1,dboulle);
+	circle(xrouge2,yrouge2,dboulle);
+	circle(xrouge3,yrouge3,dboulle);
+	circle(xrouge4,yrouge4,dboulle);
+	circle(xrouge5,yrouge5,dboulle);
+	circle(xrouge6,yrouge6,dboulle);
+	circle(xrouge7,yrouge7,dboulle);
+	// affiche les boules jaunes
+	fill('yellow');
+	circle(xjaune1,yjaune1,dboulle);
+	circle(xjaune2,yjaune2,dboulle);
+	circle(xjaune3,yjaune3,dboulle);
+	circle(xjaune4,yjaune4,dboulle);
+	circle(xjaune5,yjaune5,dboulle);
+	circle(xjaune6,yjaune6,dboulle);
+	circle(xjaune7,yjaune7,dboulle);
+}
+
+/* les méthodes qui gèrent l'affichage */
+
+// la méthode qui s'exécute au démarrage
+
+function setup()
+{
+	leDessin=createCanvas(longueur,largeur);
+	leDessin.parent("dessin");
+	background('green');
+	// crée les éléments qui ne bougent pas
+	dessinerBillard();
+	dessinerTrous();
+	
+	// pour créer un nouvau repère temporaire
+	push();
+	
+	// pour récupérer le repère précédent
+	pop();
+}
+
+// la méthode qui s'exécute en boucle
+function draw()
+{
+	background('green');
+	// crée les éléments qui ne bougent pas
+	dessinerBillard();
+	dessinerTrous();
+	
+	//crée les boules
+	dessinerBoules();
+	
+	//interaction boule-trou
+	if (xnoire < 25 && ynoire < 25 || xnoire < (longueur/2)+10 && xnoire > (longueur/2)-10 && ynoire < 25 || xnoire > longueur-25 && ynoire < 25 || xnoire < 25 && ynoire > largeur-25 || xnoire < (longueur/2)+10 && xnoire > (longueur/2)-10 && ynoire > largeur-25 || xnoire > longueur-25 && ynoire > largeur-25)
+	{
+		xnoire = 1000;
+		ynoire = 1000;
+	}
+	
+	if (xrouge1 < 25 && yrouge1 < 25 || xrouge1 < (longueur/2)+10 && xrouge1 > (longueur/2)-10 && yrouge1 < 25 || xrouge1 > longueur-25 && yrouge1 < 25 || xrouge1 < 25 && yrouge1 > largeur-25 || xrouge1 < (longueur/2)+10 && xrouge1 > (longueur/2)-10 && yrouge1 > largeur-25 || xrouge1 > longueur-25 && yrouge1 > largeur-25)
+	{
+		xrouge1 = 1000;
+		yrouge1 = 1000;
+	}
+	if (xrouge2 < 25 && yrouge2 < 25 || xrouge2 < (longueur/2)+10 && xrouge2 > (longueur/2)-10 && yrouge2 < 25 || xrouge2 > longueur-25 && yrouge2 < 25 || xrouge2 < 25 && yrouge2 > largeur-25 || xrouge2 < (longueur/2)+10 && xrouge2 > (longueur/2)-10 && yrouge2 > largeur-25 || xrouge2 > longueur-25 && yrouge2 > largeur-25)
+	{
+		xrouge2 = 1000;
+		yrouge2 = 1000;
+	}
+	if (xrouge3 < 25 && yrouge3 < 25 || xrouge3 < (longueur/2)+10 && xrouge3 > (longueur/2)-10 && yrouge3 < 25 || xrouge3 > longueur-25 && yrouge3 < 25 || xrouge3 < 25 && yrouge3 > largeur-25 || xrouge3 < (longueur/2)+10 && xrouge3 > (longueur/2)-10 && yrouge3 > largeur-25 || xrouge3 > longueur-25 && yrouge3 > largeur-25)
+	{
+		xrouge3 = 1000;
+		yrouge3 = 1000;
+	}
+	if (xrouge4 < 25 && yrouge4 < 25 || xrouge4 < (longueur/2)+10 && xrouge4 > (longueur/2)-10 && yrouge4 < 25 || xrouge4 > longueur-25 && yrouge4 < 25 || xrouge4 < 25 && yrouge4 > largeur-25 || xrouge4 < (longueur/2)+10 && xrouge4 > (longueur/2)-10 && yrouge4 > largeur-25 || xrouge4 > longueur-25 && yrouge4 > largeur-25)
+	{
+		xrouge4 = 1000;
+		yrouge4 = 1000;
+	}
+	if (xrouge5 < 25 && yrouge5 < 25 || xrouge5 < (longueur/2)+10 && xrouge5 > (longueur/2)-10 && yrouge5 < 25 || xrouge5 > longueur-25 && yrouge5 < 25 || xrouge5 < 25 && yrouge5 > largeur-25 || xrouge5 < (longueur/2)+10 && xrouge5 > (longueur/2)-10 && yrouge5 > largeur-25 || xrouge5 > longueur-25 && yrouge5 > largeur-25)
+	{
+		xrouge5 = 1000;
+		yrouge5 = 1000;
+	}
+	if (xrouge6 < 25 && yrouge6 < 25 || xrouge6 < (longueur/2)+10 && xrouge6 > (longueur/2)-10 && yrouge6 < 25 || xrouge6 > longueur-25 && yrouge6 < 25 || xrouge6 < 25 && yrouge6 > largeur-25 || xrouge6 < (longueur/2)+10 && xrouge6 > (longueur/2)-10 && yrouge6 > largeur-25 || xrouge6 > longueur-25 && yrouge6 > largeur-25)
+	{
+		xrouge6 = 1000;
+		yrouge6 = 1000;
+	}
+	if (xrouge7 < 25 && yrouge7 < 25 || xrouge7 < (longueur/2)+10 && xrouge7 > (longueur/2)-10 && yrouge7 < 25 || xrouge7 > longueur-25 && yrouge7 < 25 || xrouge7 < 25 && yrouge7 > largeur-25 || xrouge7 < (longueur/2)+10 && xrouge7 > (longueur/2)-10 && yrouge7 > largeur-25 || xrouge7 > longueur-25 && yrouge7 > largeur-25)
+	{
+		xrouge7 = 1000;
+		yrouge7 = 1000;
+	}
+	
+	if (xjaune1 < 25 && yjaune1 < 25 || xjaune1 < (longueur/2)+10 && xjaune1 > (longueur/2)-10 && yjaune1 < 25 || xjaune1 > longueur-25 && yjaune1 < 25 || xjaune1 < 25 && yjaune1 > largeur-25 || xjaune1 < (longueur/2)+10 && xjaune1 > (longueur/2)-10 && yjaune1 > largeur-25 || xjaune1 > longueur-25 && yjaune1 > largeur-25)
+	{
+		xjaune1 = 1000
+		yjaune1 = 1000
+	}
+	if (xjaune2 < 25 && yjaune2 < 25 || xjaune2 < (longueur/2)+10 && xjaune2 > (longueur/2)-10 && yjaune2 < 25 || xjaune2 > longueur-25 && yjaune2 < 25 || xjaune2 < 25 && yjaune2 > largeur-25 || xjaune2 < (longueur/2)+10 && xjaune2 > (longueur/2)-10 && yjaune2 > largeur-25 || xjaune2 > longueur-25 && yjaune2 > largeur-25)
+	{
+		xjaune2 = 1000
+		yjaune2 = 1000
+	}
+	if (xjaune3 < 25 && yjaune3 < 25 || xjaune3 < (longueur/2)+10 && xjaune3 > (longueur/2)-10 && yjaune3 < 25 || xjaune3 > longueur-25 && yjaune3 < 25 || xjaune3 < 25 && yjaune3 > largeur-25 || xjaune3 < (longueur/2)+10 && xjaune3 > (longueur/2)-10 && yjaune3 > largeur-25 || xjaune3 > longueur-25 && yjaune3 > largeur-25)
+	{
+		xjaune3 = 1000
+		yjaune3 = 1000
+	}
+	if (xjaune4 < 25 && yjaune4 < 25 || xjaune4 < (longueur/2)+10 && xjaune4 > (longueur/2)-10 && yjaune4 < 25 || xjaune4 > longueur-25 && yjaune4 < 25 || xjaune4 < 25 && yjaune4 > largeur-25 || xjaune4 < (longueur/2)+10 && xjaune4 > (longueur/2)-10 && yjaune4 > largeur-25 || xjaune4 > longueur-25 && yjaune4 > largeur-25)
+	{
+		xjaune4 = 1000
+		yjaune4 = 1000
+	}
+	if (xjaune5 < 25 && yjaune5 < 25 || xjaune5 < (longueur/2)+10 && xjaune5 > (longueur/2)-10 && yjaune5 < 25 || xjaune5 > longueur-25 && yjaune5 < 25 || xjaune5 < 25 && yjaune5 > largeur-25 || xjaune5 < (longueur/2)+10 && xjaune5 > (longueur/2)-10 && yjaune5 > largeur-25 || xjaune5 > longueur-25 && yjaune5 > largeur-25)
+	{
+		xjaune5 = 1000
+		yjaune5 = 1000
+	}
+	if (xjaune6 < 25 && yjaune6 < 25 || xjaune6 < (longueur/2)+10 && xjaune6 > (longueur/2)-10 && yjaune6 < 25 || xjaune6 > longueur-25 && yjaune6 < 25 || xjaune6 < 25 && yjaune6 > largeur-25 || xjaune6 < (longueur/2)+10 && xjaune6 > (longueur/2)-10 && yjaune6 > largeur-25 || xjaune6 > longueur-25 && yjaune6 > largeur-25)
+	{
+		xjaune6 = 1000
+		yjaune6 = 1000
+	}
+	if (xjaune7 < 25 && yjaune7 < 25 || xjaune7 < (longueur/2)+10 && xjaune7 > (longueur/2)-10 && yjaune7 < 25 || xjaune7 > longueur-25 && yjaune7 < 25 || xjaune7 < 25 && yjaune7 > largeur-25 || xjaune7 < (longueur/2)+10 && xjaune7 > (longueur/2)-10 && yjaune7 > largeur-25 || xjaune7 > longueur-25 && yjaune7 > largeur-25)
+	{
+		xjaune7 = 1000
+		yjaune7 = 1000
+	}
+}
