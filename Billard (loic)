@@ -1,0 +1,120 @@
+///////////////
+/* monScript */
+///////////////
+
+/* les variables globales */
+var leDessin;
+
+// dimensions de la zone graphique
+var longueur = 1275;
+var largeur = 725;
+//deplacement de la boule blanche
+let position;
+let velocity;
+let r = 15;
+let speed;
+var X;
+var Y;
+
+// pour la maison
+function dessinerBillard()
+{
+	// affiche un rectangle marron exterieur
+	fill(132, 60, 0 );
+	rect(0,0,1275,725);
+	// affiche un rectangle vert interieur
+	fill( 30, 165, 0 );
+	rect(30,30,1215,665);
+}
+
+function dessinerTrous()
+{
+	// affiche un cercle noir
+	fill('black');
+	circle(35,35,35);
+	circle(638,28,35);
+	circle(1240,35,35);
+	circle(35,690,35);
+	circle(638,697,35);
+	circle(1240,690,35);
+}
+
+// la méthode qui s'exécute au démarrage
+
+function setup()
+{
+	leDessin=createCanvas(longueur,largeur);
+	leDessin.parent("dessin");
+	background('green');
+	
+	// crée les éléments qui ne bougent pas
+	dessinerBillard();
+	dessinerTrous();
+	
+	//commencer au milieu du billard
+	position = createVector(width / 2, height/2);
+	speed = createVector(0, 0)
+	//vecteur initial
+	velocity = createVector(0, 0);
+	velocity.add(speed);
+}
+
+// la méthode qui s'exécute en boucle
+function draw() {
+	background('green');
+	// crée les éléments qui ne bougent pas
+	dessinerBillard();
+	dessinerTrous();
+    //dessiner boule blanche
+	fill('white');
+	ellipse(position.x, position.y, r * 2, r * 2);
+  
+	// detecter collision
+	// droite
+	if (position.x > width - (r+30)) {
+		position.x = width - (r+30);
+		velocity.x *= -1;
+	}
+	// gauche
+	if (position.x < (r+30)) {
+		position.x = (r+30);
+		velocity.x *= -1;
+	}
+	// haut
+	if (position.y < (r+30)) {
+		position.y = (r+30);
+		velocity.y *= -1;
+	}
+	//bas
+	if (position.y > height - (r+30)) {
+		position.y = height - (r+30);
+		velocity.y *= -1;
+	}
+	//pour la deceleration
+	velocity.x*=0.98
+	velocity.y*=0.98
+	if (abs(velocity.x)<0.1 && abs(velocity.y)<0.1){
+    velocity.x=0;
+    velocity.y=0;
+	}    
+	//mouvement de l'ellipse
+	position.add(velocity);
+	
+	if (keyCode === 38) {
+     r = 40;}
+	if (keyCode === 40) {
+     r = 15;}
+	 
+	if (mouseIsPressed){
+		fill('black');
+		line(position.x, position.y, mouseX, mouseY);
+	}
+}
+
+function mouseReleased() {
+	X= (position.x-mouseX)/15;
+	Y= (position.y-mouseY)/15;
+  
+	speed = createVector(X, Y)
+	velocity.add(speed);
+}
